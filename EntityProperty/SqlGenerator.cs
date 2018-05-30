@@ -40,7 +40,6 @@ namespace EntityModel
             if (SecondaryEntityIdsSupplied(entityPropertyCollection))
             {
                 dropTableSql.AppendLine("DROP TABLE #SecondaryEntity");
-                //dropTableSql.AppendLine("DROP TABLE IF EXISTS #SecondaryEntity");
             }
 
             return dropTableSql.ToString();
@@ -72,24 +71,7 @@ namespace EntityModel
 
         protected static IEnumerable<EntityProperty> GetAmendedProperties(EntityPropertyCollection entityPropertyCollection)
         {
-            return entityPropertyCollection.Properties.Where(p => p.Modified);
-            //var properties = new List<EntityPropertyBase>();
-
-            //foreach (var property in entityPropertyCollection.Properties)
-            //{
-            //    if (property.Value != property.DisplayOrder)
-            //    if (property.DataType == typeof(bool) p1 && p1.Value != p1.InitialValue ||
-            //        property.DataType == typeof(DateTime?> p2 && p2.Value != p2.InitialValue ||
-            //        property.DataType is EntityProperty<decimal?> p3 && p3.Value != p3.InitialValue ||
-            //        property.DataType is EntityProperty<Guid?> p4 && p4.Value != p4.InitialValue ||
-            //        property.DataType is EntityProperty<int?> p5 && p5.Value != p5.InitialValue ||
-            //        property.DataType is EntityProperty<string> p6 && p6.Value != p6.InitialValue)
-            //    {
-            //        properties.Add(property);
-            //    }
-            //}
-
-            //return properties;
+            return entityPropertyCollection.Properties.Where(p => p.IsModified);
         }
 
         protected static string GetColumnList(EntityPropertyCollection entityPropertyCollection)
@@ -97,7 +79,6 @@ namespace EntityModel
             var properties = GetNonNullProperties(entityPropertyCollection);
             var columnNames = properties.Select(e => e.Name);
 
-            //IEnumerable<string> columnNames = entityPropertyCollection.Properties.Where(e => e.Value != null).Select(e => e.Name);
             return "[" + string.Join("], [", columnNames) + "]";
         }
 
@@ -108,25 +89,8 @@ namespace EntityModel
             foreach (var property in properties)
             {
                 var parameterName = string.Format("@P{0}", parameters.Count + 1);
-                var parameter = new SqlParameter(parameterName, property.Value)
-                {
-                    ParameterName = parameterName
-                };
 
-                //if (property is EntityProperty<bool?>)
-                //    parameter.Value = ((EntityProperty<bool?>)property).Value;
-                //if (property is EntityProperty<DateTime?>)
-                //    parameter.Value = ((EntityProperty<DateTime?>)property).Value;
-                //if (property is EntityProperty<decimal?>)
-                //    parameter.Value = ((EntityProperty<decimal?>)property).Value;
-                //if (property is EntityProperty<Guid?>)
-                //    parameter.Value = ((EntityProperty<Guid?>)property).Value;
-                //if (property is EntityProperty<int?>)
-                //    parameter.Value = ((EntityProperty<int?>)property).Value;
-                //if (property is EntityProperty<string>)
-                //    parameter.Value = ((EntityProperty<string>)property).Value;
-
-                parameters.Add(parameter);
+                parameters.Add(new SqlParameter(parameterName, property.Value));
             }
 
             return parameters;
@@ -140,22 +104,6 @@ namespace EntityModel
         protected static IEnumerable<EntityProperty> GetNonNullProperties(EntityPropertyCollection entityPropertyCollection)
         {
             return entityPropertyCollection.Properties.Where(p => p.Value != null);
-            //var properties = new List<EntityPropertyBase>();
-
-            //foreach (var property in entityPropertyCollection.Properties)
-            //{
-            //    if ((property is EntityProperty<bool?> && ((EntityProperty<bool?>)property).Value != null) ||
-            //        (property is EntityProperty<DateTime?> && ((EntityProperty<DateTime?>)property).Value != null) ||
-            //        (property is EntityProperty<decimal?> && ((EntityProperty<decimal?>)property).Value != null) ||
-            //        (property is EntityProperty<Guid?> && ((EntityProperty<Guid?>)property).Value != null) ||
-            //        (property is EntityProperty<int?> && ((EntityProperty<int?>)property).Value != null) ||
-            //        (property is EntityProperty<string> && ((EntityProperty<string>)property).Value != null))
-            //    {
-            //        properties.Add(property);
-            //    }
-            //}
-
-            //return properties;
         }
 
         protected static string GetParameterList(EntityPropertyCollection entityPropertyCollection)

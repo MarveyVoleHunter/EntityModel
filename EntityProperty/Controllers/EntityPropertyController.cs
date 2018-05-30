@@ -50,7 +50,7 @@ namespace EntityModel.Controllers
             if (!properties.ContainsKey(id))
                 throw new IndexOutOfRangeException(id.ToString() + " was not found in the collection.");
             //Add(new Models.EntityProperty<int> { Id = 3 });
-            properties[id].TestValue = true;
+            //properties[id].TestValue = true;
             return properties[id];
         }
 

@@ -16,10 +16,7 @@ namespace EntityModel.Models
         public int? MaxLength { get; set; }
         public object InitialValue { get; set; }
         public object Value { get; set; }
-        //public virtual string ValueString { get; }
-        public bool ValueIsNull { get; set; } = true;
-        public object TestValue { get; set; }
-        public bool Modified
+        public bool IsModified
         {
             get
             {
