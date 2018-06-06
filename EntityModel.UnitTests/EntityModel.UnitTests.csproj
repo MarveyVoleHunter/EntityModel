@@ -80,14 +80,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AreaProperties.cs" />
-    <Compile Include="GlobalProductProperties.cs" />
     <Compile Include="KalibrateUnitTests.cs" />
-    <Compile Include="NetworkProperties.cs" />
-    <Compile Include="OwnProductGroupProperties.cs" />
-    <Compile Include="OwnProductProperties.cs" />
     <Compile Include="PriceNetUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestEntities\AreaProperties.cs" />
+    <Compile Include="TestEntities\CompetitorProductProperties.cs" />
+    <Compile Include="TestEntities\CompetitorSiteProperties.cs" />
+    <Compile Include="TestEntities\GlobalProductProperties.cs" />
+    <Compile Include="TestEntities\NetworkProperties.cs" />
+    <Compile Include="TestEntities\OwnProductGroupProperties.cs" />
+    <Compile Include="TestEntities\OwnProductProperties.cs" />
+    <Compile Include="TestEntities\OwnSiteProperties.cs" />
     <Compile Include="UnitTestsBase.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +103,7 @@
       <Name>EntityModel</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
