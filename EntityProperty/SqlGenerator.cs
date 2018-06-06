@@ -101,6 +101,11 @@ namespace EntityModel
             return string.Format("({0})", string.Join("), (", ids));
         }
 
+        protected static string GetIdColumn(string tableName)
+        {
+            return string.Concat(tableName, "ID");
+        }
+
         protected static IEnumerable<EntityProperty> GetNonNullProperties(EntityPropertyCollection entityPropertyCollection)
         {
             return entityPropertyCollection.Properties.Where(p => p.Value != null);
@@ -112,11 +117,6 @@ namespace EntityModel
             var count = 1;
 
             return string.Join(", ", properties.Select(p => string.Format("@P{0}", count++)));
-        }
-
-        protected static string GetIdColumn(string tableName)
-        {
-            return string.Concat(tableName, "ID");
         }
 
         protected static string GetPriceNetTableName(string tableName)

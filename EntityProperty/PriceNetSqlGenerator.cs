@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -100,29 +98,29 @@ namespace EntityModel
             return setClause.ToString();
         }
 
-        private static bool ValidatePropertyDataTypes(EntityPropertyCollection entityPropertyCollection)
-        {
-            foreach (var property in entityPropertyCollection.Properties)
-            {
-                if (property.Value == null)
-                    continue;
-                if (property.Value.GetType() == property.DataType)
-                    continue;
+        //private static bool ValidatePropertyDataTypes(EntityPropertyCollection entityPropertyCollection)
+        //{
+        //    foreach (var property in entityPropertyCollection.Properties)
+        //    {
+        //        if (property.Value == null)
+        //            continue;
+        //        if (property.Value.GetType() == property.DataType)
+        //            continue;
 
-                if (property.DataType == typeof(bool) && Boolean.TryParse(property.Value.ToString(), out bool boolValue))
-                {
-                    property.Value = boolValue;
-                    continue;
-                }
-                if (property.DataType == typeof(Guid) && Guid.TryParse(property.Value.ToString(), out Guid guidValue))
-                {
-                    property.Value = guidValue;
-                    continue;
-                }
-                return false;
-            }
+        //        if (property.DataType == typeof(bool) && Boolean.TryParse(property.Value.ToString(), out bool boolValue))
+        //        {
+        //            property.Value = boolValue;
+        //            continue;
+        //        }
+        //        if (property.DataType == typeof(Guid) && Guid.TryParse(property.Value.ToString(), out Guid guidValue))
+        //        {
+        //            property.Value = guidValue;
+        //            continue;
+        //        }
+        //        return false;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
     }
 }
