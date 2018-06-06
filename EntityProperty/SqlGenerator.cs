@@ -18,11 +18,11 @@ namespace EntityModel
             if (PrimaryEntityIdsSupplied(propertyCollection))
             {
                 entityTableSql.AppendLine(GenerateEntityTempTable("PrimaryEntity", propertyCollection.PrimaryEntityTableName,
-                    propertyCollection.PrimaryEntityColumnName, propertyCollection.PrimaryEntityIds));
+                    propertyCollection.PrimaryEntityIds));
 
                 if (SecondaryEntityIdsSupplied(propertyCollection))
                     entityTableSql.AppendLine(GenerateEntityTempTable("SecondaryEntity", propertyCollection.SecondaryEntityTableName,
-                        propertyCollection.SecondaryEntityColumnName, propertyCollection.SecondaryEntityIds));
+                        propertyCollection.SecondaryEntityIds));
             }
 
             return entityTableSql.ToString();
@@ -30,7 +30,7 @@ namespace EntityModel
 
         protected static string GenerateDropEntityTables(EntityPropertyCollection entityPropertyCollection)
         {
-            StringBuilder dropTableSql = new StringBuilder();
+            var dropTableSql = new StringBuilder();
 
             if (PrimaryEntityIdsSupplied(entityPropertyCollection))
             {
@@ -46,7 +46,7 @@ namespace EntityModel
         }
 
         private static string GenerateEntityTempTable(string tempTableName, string entityTableName,
-            string entityColumnName, IEnumerable<int> entityIds)
+            IEnumerable<int> entityIds)
         {
             StringBuilder tempTableSql = new StringBuilder();
 
@@ -58,13 +58,13 @@ namespace EntityModel
             tempTableSql.AppendLine();
             tempTableSql.AppendFormat("INSERT INTO #{0}\r\n", tempTableName);
             tempTableSql.AppendLine("([EntityID], [EntityUID])");
-            tempTableSql.AppendFormat("SELECT t.[EntityID], e.[{0}]\r\n", GetUidColumn(entityColumnName));
+            tempTableSql.AppendFormat("SELECT t.[EntityID], e.[{0}]\r\n", GetUidColumn(entityTableName));
             tempTableSql.AppendLine("FROM");
             tempTableSql.AppendLine("(");
             tempTableSql.AppendLine("VALUES");
             tempTableSql.AppendLine(GetEntityIdValuesList(entityIds));
             tempTableSql.AppendLine(") t ([EntityID])");
-            tempTableSql.AppendFormat("JOIN [dbo].[{0}] e ON e.[{1}] = t.[EntityID]\r\n", entityTableName, entityColumnName);
+            tempTableSql.AppendFormat("JOIN {0} e ON e.[{1}] = t.[EntityID]\r\n", GetPriceNetTableName(entityTableName), GetIdColumn(entityTableName));
 
             return tempTableSql.ToString();
         }
@@ -114,9 +114,19 @@ namespace EntityModel
             return string.Join(", ", properties.Select(p => string.Format("@P{0}", count++)));
         }
 
-        protected static string GetUidColumn(string idColumn)
+        protected static string GetIdColumn(string tableName)
         {
-            return string.Concat(idColumn.Remove(idColumn.Length - 2), "UID");
+            return string.Concat(tableName, "ID");
+        }
+
+        protected static string GetPriceNetTableName(string tableName)
+        {
+            return string.Format("[dbo].[PN{0}]", tableName);
+        }
+
+        protected static string GetUidColumn(string tableName)
+        {
+            return string.Concat(tableName, "UID");
         }
 
         protected static bool PrimaryEntityIdsSupplied(EntityPropertyCollection entityPropertyCollection)
@@ -148,27 +158,19 @@ namespace EntityModel
                 if (string.IsNullOrWhiteSpace(entityPropertyCollection.PrimaryEntityTableName))
                     throw new ArgumentNullException(nameof(entityPropertyCollection.PrimaryEntityTableName),
                         "If a set of entities has been supplied then an entity table name must also be supplied.");
-                if (string.IsNullOrWhiteSpace(entityPropertyCollection.PrimaryEntityColumnName))
-                    throw new ArgumentNullException(nameof(entityPropertyCollection.PrimaryEntityColumnName),
-                        "If a set of entities has been supplied then an entity column name must also be supplied.");
             }
             if (SecondaryEntityIdsSupplied(entityPropertyCollection))
             {
                 if (string.IsNullOrWhiteSpace(entityPropertyCollection.SecondaryEntityTableName))
                     throw new ArgumentNullException(nameof(entityPropertyCollection.SecondaryEntityTableName),
                         "If a set of secondary entities has been supplied then a secondary entity table name must also be supplied.");
-                if (string.IsNullOrWhiteSpace(entityPropertyCollection.SecondaryEntityColumnName))
-                    throw new ArgumentNullException(nameof(entityPropertyCollection.SecondaryEntityColumnName),
-                        "If a set of secondary entities has been supplied then a secondary entity column name must also be supplied.");
-            }
+             }
         }
 
         protected static void ValidateUpdateProperties(EntityPropertyCollection entityPropertyCollection)
         {
             if (string.IsNullOrWhiteSpace(entityPropertyCollection.TableName))
                 throw new ArgumentNullException(nameof(entityPropertyCollection.TableName), "A table name must be supplied.");
-            if (string.IsNullOrWhiteSpace(entityPropertyCollection.PrimaryEntityColumnName))
-                throw new ArgumentNullException(nameof(entityPropertyCollection.PrimaryEntityColumnName), "The name of the primary entity id column must be supplied.");
             if (entityPropertyCollection.PrimaryEntityIds == null || !entityPropertyCollection.PrimaryEntityIds.Any())
                 throw new ArgumentNullException(nameof(entityPropertyCollection.PrimaryEntityIds), "A set of one or more entity ids must be supplied.");
             var properties = GetAmendedProperties(entityPropertyCollection);

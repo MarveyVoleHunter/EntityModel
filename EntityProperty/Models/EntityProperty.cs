@@ -8,8 +8,8 @@ namespace EntityModel.Models
         public string Name { get; set; }
         public int TxId { get; set; }
         public int DisplayOrder { get; set; }
-        //public string DataType { get; set; }
         public Type DataType { get; set; }
+        public string RelationTypeId { get; set; }
         public bool Required { get; set; }
         public decimal MinValue { get; set; }
         public decimal MaxValue { get; set; }
