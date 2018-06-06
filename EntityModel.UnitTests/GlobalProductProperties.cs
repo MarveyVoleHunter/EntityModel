@@ -9,7 +9,7 @@ namespace EntityModel.UnitTests
         {
             var propertyCollection = new EntityPropertyCollection
             {
-                TableName = "PNGlobalProduct",
+                TableName = "GlobalProduct",
             };
 
             propertyCollection.Properties = new EntityProperty[]

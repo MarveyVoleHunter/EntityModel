@@ -1,5 +1,4 @@
-﻿using System;
-using EntityModel.Models;
+﻿using EntityModel.Models;
 
 namespace EntityModel.UnitTests
 {
@@ -9,13 +8,11 @@ namespace EntityModel.UnitTests
         {
             var propertyCollection = new EntityPropertyCollection
             {
-                TableName = "PNOwnProductGroup",
-                PrimaryEntityColumnName = "OwnSiteID",
-                PrimaryEntityTableName = "PNOwnSite",
+                TableName = "OwnProductGroup",
+                PrimaryEntityTableName = "OwnSite",
                 PrimaryEntityIds = new int[] { 1, 2 },
-                SecondaryEntityColumnName = "GlobalProductGroupID",
                 SecondaryEntityIds = new int[] { 4 },
-                SecondaryEntityTableName = "PNGlobalProductGroup"
+                SecondaryEntityTableName = "GlobalProductGroup"
             };
 
             propertyCollection.Properties = new EntityProperty[]

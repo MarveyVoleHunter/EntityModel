@@ -9,7 +9,7 @@ namespace EntityModel
         {
             var propertyCollection = new EntityPropertyCollection
             {
-                TableName = "PNNetwork",
+                TableName = "Network",
             };
 
             propertyCollection.Properties = new EntityProperty[]

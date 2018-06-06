@@ -9,7 +9,7 @@ namespace EntityModel.UnitTests
         {
             var propertyCollection = new EntityPropertyCollection
             {
-                TableName = "PNArea",
+                TableName = "Area",
             };
 
             propertyCollection.Properties = new EntityProperty[]
@@ -89,7 +89,9 @@ namespace EntityModel.UnitTests
                     DataType = typeof(Guid),
                     DisplayOrder = 67,
                     Required = false,
-                    TxId = 67
+                    TxId = 67,
+                    RelationTypeId = "USER",
+                    Value = new Guid("A45083AC-9D5E-46CC-BD3A-53A2F25553F4")
                 },
                 new EntityProperty
                 {
@@ -139,7 +141,7 @@ namespace EntityModel.UnitTests
                     Required = false,
                     TxId = 50,
                     Value = new Guid("5659ACC1-324E-4356-BA43-DD58CF8C052C")
-}
+                }
             };
             
             return propertyCollection;

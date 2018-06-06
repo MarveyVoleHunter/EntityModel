@@ -10,13 +10,11 @@ namespace EntityModel.UnitTests
         {
             var propertyCollection = new EntityPropertyCollection
             {
-                TableName = "PNOwnProduct",
-                PrimaryEntityColumnName = "OwnSiteID",
-                PrimaryEntityTableName = "PNOwnSite",
+                TableName = "OwnProduct",
+                PrimaryEntityTableName = "OwnSite",
                 PrimaryEntityIds = new int[] { 1, 2 },
-                SecondaryEntityColumnName = "GlobalProductID",
                 SecondaryEntityIds = new int[] { 7 },
-                SecondaryEntityTableName = "PNGlobalProduct"
+                SecondaryEntityTableName = "GlobalProduct"
             };
 
             propertyCollection.Properties = new EntityProperty[]
