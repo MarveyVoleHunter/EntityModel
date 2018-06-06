@@ -40,18 +40,18 @@ namespace EntityModel
 
             insertSql.Append(GenerateCreateEntityTables(propertyCollection));
 
-            insertSql.AppendFormat("INSERT INTO [dbo].[{0}]\r\n", propertyCollection.TableName);
+            insertSql.AppendFormat("INSERT INTO {0}\r\n", GetPriceNetTableName(propertyCollection.TableName));
             insertSql.Append("(");
 
             if (PrimaryEntityIdsSupplied(propertyCollection))
             {
-                insertSql.AppendFormat("[{0}], ", GetUidColumn(propertyCollection.PrimaryEntityColumnName));
+                insertSql.AppendFormat("[{0}], ", GetUidColumn(propertyCollection.PrimaryEntityTableName));
                 selectSql.Append("pe.[EntityUID], ");
                 entitySql.AppendLine("FROM #PrimaryEntity pe");
 
                 if (SecondaryEntityIdsSupplied(propertyCollection))
                 {
-                    insertSql.AppendFormat("[{0}], ", GetUidColumn(propertyCollection.SecondaryEntityColumnName));
+                    insertSql.AppendFormat("[{0}], ", GetUidColumn(propertyCollection.SecondaryEntityTableName));
                     selectSql.Append("se.[EntityUID], ");
                     entitySql.AppendLine("CROSS JOIN #SecondaryEntity se");
                 }
@@ -76,30 +76,14 @@ namespace EntityModel
             updateSql.AppendLine("UPDATE t");
             updateSql.AppendLine("SET");
             updateSql.AppendLine(GetSetClause(propertyCollection));
-            updateSql.AppendFormat("FROM [dbo].[{0}] t\r\n", propertyCollection.TableName);
-            updateSql.AppendFormat("JOIN #PrimaryEntity pe ON pe.[EntityUID] = t.[{0}]", GetUidColumn(propertyCollection.PrimaryEntityColumnName));
+            updateSql.AppendFormat("FROM {0} t\r\n", GetPriceNetTableName(propertyCollection.TableName));
+            updateSql.AppendFormat("JOIN #PrimaryEntity pe ON pe.[EntityUID] = t.[{0}]", GetUidColumn(propertyCollection.PrimaryEntityTableName));
 
             if (SecondaryEntityIdsSupplied(propertyCollection))
-                updateSql.AppendFormat("JOIN #SecondaryEntity se ON se.[EntityUID] = t.[{0}]", GetUidColumn(propertyCollection.SecondaryEntityColumnName));
+                updateSql.AppendFormat("JOIN #SecondaryEntity se ON se.[EntityUID] = t.[{0}]", GetUidColumn(propertyCollection.SecondaryEntityTableName));
 
             return updateSql.ToString();
         }
-
-        //private static string GetValueList(EntityPropertyCollection entityPropertyCollection)
-        //{
-        //    IEnumerable<string> parameterNames = new List<string>;
-        //    StringBuilder parameterNames2 = new StringBuilder();
-        //    var properties = GetNonNullProperties(entityPropertyCollection);
-        //    foreach (var property in properties)
-        //    {
-        //        parameterNames.AppendFormat("@P{0}, ", 1);
-        //    }
-        //}
-
-        //private static string FormatPropertyValue(EntityPropertyBase property)
-        //{
-        //    if (property.i)
-        //}
 
         private static string GetSetClause(EntityPropertyCollection entityPropertyCollection)
         {
