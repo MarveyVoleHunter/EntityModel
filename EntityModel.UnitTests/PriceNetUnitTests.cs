@@ -105,6 +105,26 @@ namespace EntityModel.UnitTests
             TestCommand(command);
         }
 
+        [TestMethod]
+        public void CanInsertCompetitorProduct()
+        {
+            var propertyCollection = CompetitorProductProperties.Get();
+            var command = PriceNetSqlGenerator.GenerateInsertCommand(propertyCollection);
+
+            ParseSql(command.CommandText);
+            TestCommand(command);
+        }
+
+        [TestMethod]
+        public void CanInsertCompetitorSite()
+        {
+            var propertyCollection = CompetitorSiteProperties.Get();
+            var command = PriceNetSqlGenerator.GenerateInsertCommand(propertyCollection);
+
+            ParseSql(command.CommandText);
+            TestCommand(command);
+        }
+
         private void Test2(EntityPropertyCollection propertyCollection)
         {
             //Moq
@@ -168,6 +188,16 @@ namespace EntityModel.UnitTests
         public void CanInsertOwnProductGroup()
         {
             var entityPropertyCollection = OwnProductGroupProperties.Get();
+            var command = PriceNetSqlGenerator.GenerateInsertCommand(entityPropertyCollection);
+
+            ParseSql(command.CommandText);
+            TestCommand(command);
+        }
+
+        [TestMethod]
+        public void CanInsertOwnSite()
+        {
+            var entityPropertyCollection = OwnSiteProperties.Get();
             var command = PriceNetSqlGenerator.GenerateInsertCommand(entityPropertyCollection);
 
             ParseSql(command.CommandText);
